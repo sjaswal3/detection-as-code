@@ -14,4 +14,5 @@ Sigma detection rules that are automatically tested against real Windows attack 
 | DCSync Directory Replication Request | T1003.006 | Mimikatz lsadump::dcsync | ✅ Caught |
 | PowerShell LSASS Dump via MiniDumpWriteDump | T1003.001, T1059.001 | PowerShell script block (4104) | ✅ Caught |
 | Memory Dump via comsvcs.dll MiniDump | T1003.001, T1218.011 | rundll32 living-off-the-land dump | ✅ Caught |
+
 ![Results](screenshots/results.png)
