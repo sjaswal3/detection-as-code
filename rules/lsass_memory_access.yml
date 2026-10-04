@@ -1,0 +1,31 @@
+title: Suspicious Access to LSASS Memory
+id: 3f6a9c2e-8d41-4b7a-a1e5-2c9b7d4e6f10
+status: experimental
+description: >
+  Detects a process opening LSASS with access rights used by credential
+  dumping tools like Mimikatz. LSASS holds password hashes and Kerberos
+  tickets for logged-in users.
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+author: Sakshi Jaswal
+date: 2026/10/04
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+logsource:
+  product: windows
+  category: process_access
+detection:
+  selection:
+    EventID: 10
+    TargetImage|endswith: '\lsass.exe'
+    GrantedAccess|contains:
+      - '0x1010'
+      - '0x1410'
+      - '0x1438'
+      - '0x143a'
+      - '0x1fffff'
+  condition: selection
+falsepositives:
+  - Antivirus and EDR agents that scan LSASS
+level: high

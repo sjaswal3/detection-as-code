@@ -1,0 +1,6 @@
+# One entry per rule: which attack log it must catch.
+tests:
+  - rule: rules/lsass_memory_access.yml
+    technique: T1003.001
+    evtx: EVTX-ATTACK-SAMPLES/Credential Access/sysmon_10_lsass_mimikatz_sekurlsa_logonpasswords.evtx
+    expect_hits: true

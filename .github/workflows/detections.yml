@@ -1,0 +1,29 @@
+name: Test detections
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get attack logs
+        run: git clone --depth 1 https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES.git
+
+      - name: Get Chainsaw
+        run: |
+          curl -sL "$CHAINSAW_URL" -o chainsaw.tar.gz
+          mkdir chainsaw && tar -xzf chainsaw.tar.gz -C chainsaw --strip-components=1
+          chmod +x chainsaw/chainsaw
+        env:
+          CHAINSAW_URL: https://github.com/WithSecureOpenSource/chainsaw/releases/latest/download/chainsaw_x86_64-unknown-linux-gnu.tar.gz
+
+      - name: Run rule tests
+        run: |
+          pip install pyyaml
+          python scripts/run_tests.py
+
+      - name: Show results
+        if: always()
+        run: cat results.md >> "$GITHUB_STEP_SUMMARY"
