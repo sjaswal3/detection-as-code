@@ -1,0 +1,28 @@
+title: PowerShell Script Dumping LSASS with MiniDumpWriteDump
+id: 2d9f6a13-7e48-4c0b-9a52-6f1e8b3c7d90
+status: experimental
+description: >
+  Detects PowerShell script blocks that call MiniDumpWriteDump, a Windows API
+  used to write a process's memory to disk. Attackers use it to dump LSASS
+  and extract credentials offline.
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+  - https://attack.mitre.org/techniques/T1059/001/
+author: Sakshi Jaswal
+date: 2026/10/04
+tags:
+  - attack.credential_access
+  - attack.execution
+  - attack.t1003.001
+  - attack.t1059.001
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection:
+    EventID: 4104
+    ScriptBlockText|contains: 'MiniDumpWriteDump'
+  condition: selection
+falsepositives:
+  - Legitimate crash-dump or debugging scripts
+level: high

@@ -1,0 +1,30 @@
+title: Process Memory Dump via comsvcs.dll MiniDump
+id: 5a7c1e94-3b62-4f8d-8e07-9c4d2a6b1f38
+status: experimental
+description: >
+  Detects rundll32 calling the MiniDump function in comsvcs.dll. This is a
+  built-in Windows DLL, so attackers use it to dump LSASS memory without
+  dropping a tool like Mimikatz (living off the land).
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+  - https://attack.mitre.org/techniques/T1218/011/
+author: Sakshi Jaswal
+date: 2026/10/04
+tags:
+  - attack.credential_access
+  - attack.defense_evasion
+  - attack.t1003.001
+  - attack.t1218.011
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    EventID: 1
+    CommandLine|contains|all:
+      - 'comsvcs'
+      - 'MiniDump'
+  condition: selection
+falsepositives:
+  - Very rare; legitimate admins almost never use this
+level: high

@@ -4,3 +4,15 @@ tests:
     technique: T1003.001
     evtx: EVTX-ATTACK-SAMPLES/Credential Access/sysmon_10_lsass_mimikatz_sekurlsa_logonpasswords.evtx
     expect_hits: true
+  - rule: rules/dcsync.yml
+    technique: T1003.006
+    evtx: EVTX-ATTACK-SAMPLES/Credential Access/CA_DCSync_4662.evtx
+    expect_hits: true
+  - rule: rules/powershell_lsass_minidump.yml
+    technique: T1003.001
+    evtx: EVTX-ATTACK-SAMPLES/Credential Access/Powershell_4104_MiniDumpWriteDump_Lsass.evtx
+    expect_hits: true
+  - rule: rules/comsvcs_minidump.yml
+    technique: T1003.001
+    evtx: EVTX-ATTACK-SAMPLES/Credential Access/sysmon_10_1_memdump_comsvcs_minidump.evtx
+    expect_hits: true

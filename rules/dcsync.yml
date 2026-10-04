@@ -1,0 +1,30 @@
+title: DCSync Attack - Directory Replication Request
+id: 8b2e4f71-5c3a-4d9e-b6f0-1a7c3e9d2b45
+status: experimental
+description: >
+  Detects an account requesting directory replication rights from a domain
+  controller. Attackers use DCSync (Mimikatz lsadump::dcsync) to pretend to
+  be a DC and pull password hashes, including krbtgt.
+references:
+  - https://attack.mitre.org/techniques/T1003/006/
+author: Sakshi Jaswal
+date: 2026/10/04
+tags:
+  - attack.credential_access
+  - attack.t1003.006
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4662
+    Properties|contains:
+      - '1131f6aa-9c07-11d1-f79f-00c04fc2dcd2'
+      - '1131f6ad-9c07-11d1-f79f-00c04fc2dcd2'
+  filter_machine_accounts:
+    SubjectUserName|endswith: '$'
+  condition: selection and not filter_machine_accounts
+falsepositives:
+  - Real domain controllers replicating with each other (machine accounts are filtered)
+  - Azure AD Connect sync accounts
+level: high
